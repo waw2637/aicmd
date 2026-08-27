@@ -1,5 +1,7 @@
 # Security
 
+Don't be dumb, if you wouldn't post it, then it shouldn't be put into this tool either.
+
 ## Generated commands
 
 Model output is untrusted input. Ctrl-G inserts a generated command onto the
@@ -14,8 +16,9 @@ that look sensitive are redacted, but redaction cannot guarantee that no secret
 appears elsewhere. Use `--no-shell-context` when the server should receive
 only the request.
 
-API keys are stored in `~/.config/bash-ai/config`. Keep that file mode
-`0600`. Prefer HTTPS for servers outside the local machine or trusted network.
+API keys are stored in `~/.config/bash-ai/config`. I would not call this secure lol.
+Keep that file mode `0600` but also don't do it. Prefer HTTPS for servers outside the
+local machine or trusted network.
 
 ## Reporting
 
