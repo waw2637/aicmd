@@ -1,7 +1,68 @@
-# Bash AI — portable terminal model client
+# AI CMD
+Yes this tool was created with AI assistance for those who care. Please
+read this readme, it tell you important stuff.
+
+#BackStory
+
+## In the beginning
+I like many of you relied on the google overlord to look up syntax, regex, or
+the 2am brainfog induced memory loss command help. It sucks to flip around
+like that. So when i got may new laptop with an 
+NPU (Nearly Pathetically Useless) AI chip that is able to,
+despite my hate, run tiny (Basically useless) LLMs i couldn't have cared less.
+"Then in an out of weeks and almost over a year" (Where the Wild Things Are).
+I had an idea, what if I am lame. I know I am lame, What if this crazy NPU could
+run a tiny (useless) llm that could save me a few browser open and load and googles
+a day. Proceed boring IT work of getting an amd npu working on linux. Then lets see
+certainly someone has an AI cmd line tool. Yep.
+
+## Frustration
+I proceed to start looking at AI CMD tools. And this is where I being me lost my
+mind for almost a day looking at these different options then entire time saying
+"i could do what i want with a freaking declared function". Well that what i did.
+
+##Evolution
+Well the declared function worked how i needed. But i have alot of computer systems
+and I found that i wanted to use this on alot of them. I setup a local small server
+and then started pointing non AI capable things at that. At that point I needed a
+way to update installs as i added tweaks and features etc. So came an installer/Update
+tool and a removal script. But i needed prompts that fit each environment so came 
+the external prompt files. Now we have something and here we are now throwing it
+into the wild of git-hub. Not because this is in any way a special tool. Quite the
+opposite, its boring mundane scripts that just concats strings together, but we
+tech people are lazy and if it save someone else having to invest a few minutes of
+time to get what they want then here it is.
+
+## What is it
+I wanted a simple AI command line tool, one that i could change easily to suit.
+I went looking and though what i found was TOO complex. I dont need a platform to
+concat strings. Why not just have some nice little scripts and some text files to 
+hold some context. Here we are AI CMD.
+
+## Whats Cool
+You can read and understand this thing in 20 minutes. NOTHING is hidden. You are
+meant to change anything and everything. Its you shell after all.
+
+## Prompts
+It comes with some extremely generic prompts. These will need to be tuned to get
+the best performance from this tool. This is a feature.
+
+## Nuances that you can change
+I have set the `crtl-g` command to NOT pass any context from the shell. If you want
+context you would use the `aicmd`. you can edit context "length" by editing the 
+`/.bashrc`.
+
+If you think "I want more command versions, prompts, whatever". Great, Add them.
+That's the point. This tool is the bare bones and is a pile of simple scripts, 
+change them.
+
+Hell Dump the files into your favorite ai thing and ask it to change it. Do what
+makes you happy. That is the point of bash. To be powerful in its simplicity.
+
+# The More Detailed Stuff Overview
 
 This package installs a runtime-independent Bash integration for local or
-remote language-model servers. It provides:
+remote language-model servers.
 
 - `Ctrl-G`: replace the text currently typed at the Bash prompt with one
   generated command, without sending shell context.
@@ -11,10 +72,8 @@ remote language-model servers. It provides:
 - Linux- and macOS-specific command prompts. The macOS prompt accounts for BSD
   userland and does not invent Linux-only commands.
 
-The client talks to an OpenAI-compatible `chat/completions` endpoint. It has
-guided presets for Ollama, llama.cpp, Lemonade, FastFlowLM, and custom servers.
-The default new-install preset is Ollama at
-`http://127.0.0.1:11434/v1/chat/completions`.
+The client talks to an OpenAI-compatible `chat/completions` endpoint. You can use
+guided presets that are 
 
 ## Platform support
 
@@ -55,7 +114,14 @@ brew install bash python
 
 ## Install
 
-Extract the archive, enter the extracted directory, and run the Python
+Gather up your details:
+  -Hostname/Ip/port
+  -The Model Name
+  -Maximum output tokens and model temp
+  -this thing does not have a safe way to store and API KEY so that on you
+
+Check the prompts make tweaks, change command names, do what you want
+then extract the archive, enter the extracted directory, and run the Python
 installer through its small shell launcher:
 
 ```bash
