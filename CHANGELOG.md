@@ -2,8 +2,9 @@
 
 ## 1.6.0
 
-- Added optional `ai-start` and `ai-stop` functions for supported local
-  runtime/platform combinations.
+- Added opt-in `ai-start` and `ai-stop` functions for supported local
+  runtime/platform combinations, with `--lifecycle` and `--no-lifecycle`
+  installer controls.
 - Kept lifecycle commands in the editable
   `~/.config/bash-ai/lifecycle.bash` file.
 - Avoided installing guessed lifecycle commands for custom or unsupported
