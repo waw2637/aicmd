@@ -1,14 +1,24 @@
 # Starting and stopping the model server
 
-AI CMD can install two small convenience functions:
+AI CMD can optionally install two small convenience functions:
 
 ```bash
 ai-start
 ai-stop
 ```
 
-They are installed only when the installer knows a reasonable default for the
-selected runtime and operating system:
+Interactive configuration asks whether to install them when the installer knows
+a reasonable default for the selected runtime and operating system. For scripts:
+
+```bash
+./install.sh --lifecycle
+./install.sh --no-lifecycle
+```
+
+Non-interactive installation does not add them unless `--lifecycle` is supplied,
+and ordinary updates preserve the previous choice.
+
+Defaults are available for:
 
 | Runtime | Platform | Default |
 | --- | --- | --- |
