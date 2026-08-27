@@ -618,3 +618,80 @@ Removal deletes the managed integration and prompt directory and removes the
 guarded startup blocks from `.bashrc` and, on macOS, `.bash_profile`. Startup
 files are backed up first. The selected model runtime and downloaded models are
 never modified.
+
+## Optional server start and stop commands
+
+The installer can optionally add two convenience functions:
+
+```bash
+ai-start
+ai-stop
+```
+
+They are not required for AI CMD. During interactive configuration, the
+installer offers them only when it has a supported default for the selected
+runtime and operating system. Choose yes to install them or no to leave server
+lifecycle management alone.
+
+For scripted installation or reconfiguration:
+
+```bash
+./install.sh --lifecycle
+./install.sh --no-lifecycle
+```
+
+A non-interactive install does not add the functions unless `--lifecycle` is
+provided. Ordinary updates preserve the existing choice.
+
+Supported defaults:
+
+| Runtime | Platform | Start/stop mechanism |
+| --- | --- | --- |
+| Ollama | Linux | `sudo systemctl start/stop ollama` |
+| Ollama | macOS | Open or quit the Ollama application |
+| FastFlowLM | Linux | `systemctl --user start/stop fastflowlm.service` |
+
+The implementation is deliberately just ordinary Bash in:
+
+```text
+~/.config/bash-ai/lifecycle.bash
+```
+
+For Linux systemd services, adapting it is normally as simple as changing the
+unit name or choosing between a user and system service:
+
+```bash
+ai-start() {
+    systemctl --user start my-model-server.service
+}
+
+ai-stop() {
+    systemctl --user stop my-model-server.service
+}
+```
+
+For a system-wide service instead:
+
+```bash
+ai-start() {
+    sudo systemctl start my-model-server.service
+}
+
+ai-stop() {
+    sudo systemctl stop my-model-server.service
+}
+```
+
+llama.cpp, Lemonade, custom endpoints, and remote servers do not receive guessed
+commands because their model paths, launch arguments, containers, service names,
+or host permissions vary. To support one, create
+`~/.config/bash-ai/lifecycle.bash` with your own `ai-start` and `ai-stop`
+functions, then reload Bash:
+
+```bash
+source ~/.bashrc
+```
+
+A lifecycle file without the installer's managed header is considered
+user-owned and is preserved during updates. The complete lifecycle reference is
+in [LIFECYCLE.md](LIFECYCLE.md).
