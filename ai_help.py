@@ -23,6 +23,8 @@ ai-conf --temperature N Change generation temperature
 ai-prompt               Select and edit a prompt preset
 ai-model                Show runtime, model, and endpoint
 ai-health               Test the server and list models
+ai-start                Start a supported local model server (when installed)
+ai-stop                 Stop a supported local model server (when installed)
 
 Complete interactive help: ai --help
 Quick help: ai -help, ai -h, or ai '?'
@@ -59,6 +61,8 @@ ai-model                    Show platform, runtime, model, and endpoint
 ai-health                   Query the server's /v1/models endpoint
 ai-conf [OPTIONS]           Show or change client configuration
 ai-prompt [PRESET]          Select and edit prompt files
+ai-start                    Start the configured supported local server
+ai-stop                     Stop the configured supported local server
 
 Common AI options:
   --no-shell-context        Do not include the Bash snapshot
@@ -150,7 +154,12 @@ supported through /v1/chat/completions.
 
 Show the selected connection with `ai-model`. Test the server and display its
 model list with `ai-health`. Use `ai-conf --server`, `--runtime`, and `--model`
-to change backends without reinstalling the shell integration.""",
+to change backends without reinstalling the shell integration.
+
+For supported local runtime/platform combinations, the installer also creates
+`ai-start` and `ai-stop`. Their transparent function definitions live in
+~/.config/bash-ai/lifecycle.bash. Unsupported and remote/custom servers do not
+receive guessed lifecycle commands. Create that file yourself to add them.""",
             ),
         ),
         (
