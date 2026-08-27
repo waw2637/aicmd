@@ -324,6 +324,7 @@ ai-conf() {
         # shellcheck disable=SC1090
         source "$config_file"
     fi
+    _bash_ai_load_lifecycle
 }
 
 ai-prompt() {
@@ -334,6 +335,17 @@ ai-prompt() {
     fi
     BASH_AI_PROMPT_DIR="$BASH_AI_PROMPT_DIR" python3 "$prompt_tool" "$@"
 }
+
+_bash_ai_load_lifecycle() {
+    local lifecycle_file="${BASH_AI_LIFECYCLE_FILE:-$HOME/.config/bash-ai/lifecycle.bash}"
+    unset -f ai-start ai-stop 2>/dev/null || true
+    if [[ -r "$lifecycle_file" ]]; then
+        # shellcheck disable=SC1090
+        source "$lifecycle_file"
+    fi
+}
+
+_bash_ai_load_lifecycle
 
 if [[ $- == *i* ]]; then
     bind -x '"\C-g":_ai_replace_line'
