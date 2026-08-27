@@ -4,24 +4,25 @@ read this readme, it tell you important stuff.
 
 # BackStory
 
-## In the beginning
+### In the beginning
 I like many of you relied on the google overlord to look up syntax, regex, or
 the 2am brainfog induced memory loss command help. It sucks to flip around
 like that. So when i got may new laptop with an 
 NPU (Nearly Pathetically Useless) AI chip that is able to,
 despite my hate, run tiny (Basically useless) LLMs i couldn't have cared less.
 "Then in an out of weeks and almost over a year" (Where the Wild Things Are).
-I had an idea, what if I am lame. I know I am lame, What if this crazy NPU could
+I had an idea, "What if I am lame?" I know I am lame, "What if this crazy NPU could
 run a tiny (useless) llm that could save me a few browser open and load and googles
-a day. Proceed boring IT work of getting an amd npu working on linux. Then lets see
+a day?" Proceed to boring IT work of getting an amd npu working on linux. Then lets see,
 certainly someone has an AI cmd line tool. Yep.
 
-## Frustration
+### Frustration
 I proceed to start looking at AI CMD tools. And this is where I being me lost my
-mind for almost a day looking at these different options then entire time saying
-"i could do what i want with a freaking declared function". Well that what i did.
+mind for almost a day into the night looking at these different options then entire
+time saying "I could do what I want with a freaking declared function". 
+So I did.
 
-##Evolution
+### Evolution
 Well the declared function worked how i needed. But i have alot of computer systems
 and I found that i wanted to use this on alot of them. I setup a local small server
 and then started pointing non AI capable things at that. At that point I needed a
@@ -33,21 +34,23 @@ opposite, its boring mundane scripts that just concats strings together, but we
 tech people are lazy and if it save someone else having to invest a few minutes of
 time to get what they want then here it is.
 
-## What is it
+### What is it
 I wanted a simple AI command line tool, one that i could change easily to suit.
 I went looking and though what i found was TOO complex. I dont need a platform to
 concat strings. Why not just have some nice little scripts and some text files to 
 hold some context. Here we are AI CMD.
 
-## Whats Cool
+### What's Cool
 You can read and understand this thing in 20 minutes. NOTHING is hidden. You are
 meant to change anything and everything. Its you shell after all.
 
-## Prompts
+### Prompts
 It comes with some extremely generic prompts. These will need to be tuned to get
 the best performance from this tool. This is a feature.
 
-## Nuances that you can change
+### Nuances that you can change
+You can change everything, download it look at it say this guys an idiot and change it all!
+
 I have set the `crtl-g` command to NOT pass any context from the shell. If you want
 context you would use the `aicmd`. you can edit context "length" by editing the 
 `/.bashrc`.
@@ -59,7 +62,7 @@ change them.
 Hell Dump the files into your favorite ai thing and ask it to change it. Do what
 makes you happy. That is the point of bash. To be powerful in its simplicity.
 
-# The More Detailed Stuff Overview
+# What you actually Came here for
 
 This package installs a runtime-independent Bash integration for local or
 remote language-model servers.
