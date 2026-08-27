@@ -1,6 +1,6 @@
 # AI CMD
 Yes this tool was created with AI assistance for those who care. Please
-read this readme, it tell you important stuff.
+read this readme, it will tell you important stuff.
 
 # BackStory
 
