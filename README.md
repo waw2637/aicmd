@@ -2,7 +2,7 @@
 Yes this tool was created with AI assistance for those who care. Please
 read this readme, it tell you important stuff.
 
-#BackStory
+# BackStory
 
 ## In the beginning
 I like many of you relied on the google overlord to look up syntax, regex, or
