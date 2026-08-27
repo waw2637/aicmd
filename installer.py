@@ -234,7 +234,8 @@ def lifecycle_content(runtime: str) -> str | None:
         "# Managed by the AI CMD installer.\n"
         "# Server lifecycle customization lives in this file.\n"
         "# Replace the function bodies for a different service manager or server.\n"
-        f"# Installed default: {runtime} on {system}\n\n"
+        f"# Installed default: {runtime} on {system}\n"
+        f"BASH_AI_LIFECYCLE_RUNTIME={runtime!r}\n\n"
     )
     if runtime == "fastflowlm" and system == "Linux":
         return header + '''ai-start() {
@@ -266,7 +267,7 @@ ai-stop() {
     return None
 
 
-def write_lifecycle(values: dict[str, str]) -> bool:
+def write_lifecycle(values: dict[str, str], enabled: bool | None) -> bool:
     content = lifecycle_content(values["BASH_AI_RUNTIME"])
     existing_is_managed = (
         LIFECYCLE_FILE.exists()
@@ -277,6 +278,12 @@ def write_lifecycle(values: dict[str, str]) -> bool:
     if content is None:
         if existing_is_managed:
             LIFECYCLE_FILE.unlink()
+        return False
+    if enabled is False:
+        if existing_is_managed:
+            LIFECYCLE_FILE.unlink()
+        return LIFECYCLE_FILE.exists()
+    if enabled is None and not LIFECYCLE_FILE.exists():
         return False
     if LIFECYCLE_FILE.exists() and not existing_is_managed:
         print(f"Preserving custom lifecycle file: {LIFECYCLE_FILE}")
@@ -519,6 +526,19 @@ def main() -> int:
     parser.add_argument(
         "--non-interactive", action="store_true", help="keep existing/default settings without questions"
     )
+    lifecycle_group = parser.add_mutually_exclusive_group()
+    lifecycle_group.add_argument(
+        "--lifecycle",
+        action="store_true",
+        default=None,
+        help="install ai-start and ai-stop when the runtime/platform is supported",
+    )
+    lifecycle_group.add_argument(
+        "--no-lifecycle",
+        dest="lifecycle",
+        action="store_false",
+        help="do not install, or remove managed, ai-start and ai-stop functions",
+    )
     args = parser.parse_args()
 
     if args.purge_config and not args.remove:
@@ -584,7 +604,19 @@ def main() -> int:
     copy_program_files()
     if should_configure or not CONFIG_FILE.exists():
         write_config(values)
-    lifecycle_installed = write_lifecycle(values)
+    lifecycle_choice = args.lifecycle
+    lifecycle_available = lifecycle_content(values["BASH_AI_RUNTIME"]) is not None
+    if (
+        lifecycle_choice is None
+        and lifecycle_available
+        and should_configure
+        and not args.non_interactive
+    ):
+        default_lifecycle = LIFECYCLE_FILE.exists()
+        suffix = "Y/n" if default_lifecycle else "y/N"
+        answer = input(f"Install optional ai-start and ai-stop functions? [{suffix}]: ").strip().lower()
+        lifecycle_choice = default_lifecycle if not answer else answer in {"y", "yes"}
+    lifecycle_installed = write_lifecycle(values, lifecycle_choice)
     bashrc_backup = update_bashrc()
     profile_backup = update_macos_bash_profile()
 
