@@ -1,0 +1,8 @@
+# Bash AI client configuration.
+BASH_AI_RUNTIME="ollama"
+BASH_AI_ENDPOINT="http://127.0.0.1:11434/v1/chat/completions"
+BASH_AI_MODEL="gemma3:4b"
+BASH_AI_API_KEY=""
+BASH_AI_MAX_TOKENS="4096"
+BASH_AI_TEMPERATURE="0.1"
+BASH_AI_PROMPT_DIR="$HOME/.local/share/bash-ai/prompts"
