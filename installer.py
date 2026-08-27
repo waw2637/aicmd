@@ -24,6 +24,7 @@ INSTALL_DIR = HOME / ".local" / "share" / "bash-ai"
 PROMPT_DIR = INSTALL_DIR / "prompts"
 CONFIG_DIR = HOME / ".config" / "bash-ai"
 CONFIG_FILE = CONFIG_DIR / "config"
+LIFECYCLE_FILE = CONFIG_DIR / "lifecycle.bash"
 BASHRC = HOME / ".bashrc"
 BEGIN_MARKER = "# >>> bash-ai >>>"
 END_MARKER = "# <<< bash-ai <<<"
@@ -227,6 +228,64 @@ def write_config(values: dict[str, str]) -> None:
     atomic_write(CONFIG_FILE, "\n".join(lines) + "\n", 0o600)
 
 
+def lifecycle_content(runtime: str) -> str | None:
+    system = platform.system()
+    header = (
+        "# Managed by the AI CMD installer.\n"
+        "# Server lifecycle customization lives in this file.\n"
+        "# Replace the function bodies for a different service manager or server.\n"
+        f"# Installed default: {runtime} on {system}\n\n"
+    )
+    if runtime == "fastflowlm" and system == "Linux":
+        return header + '''ai-start() {
+    systemctl --user start fastflowlm.service
+}
+
+ai-stop() {
+    systemctl --user stop fastflowlm.service
+}
+'''
+    if runtime == "ollama" and system == "Linux":
+        return header + '''ai-start() {
+    sudo systemctl start ollama
+}
+
+ai-stop() {
+    sudo systemctl stop ollama
+}
+'''
+    if runtime == "ollama" and system == "Darwin":
+        return header + '''ai-start() {
+    open -a Ollama
+}
+
+ai-stop() {
+    osascript -e 'quit app "Ollama"'
+}
+'''
+    return None
+
+
+def write_lifecycle(values: dict[str, str]) -> bool:
+    content = lifecycle_content(values["BASH_AI_RUNTIME"])
+    existing_is_managed = (
+        LIFECYCLE_FILE.exists()
+        and LIFECYCLE_FILE.read_text(errors="replace").startswith(
+            "# Managed by the AI CMD installer."
+        )
+    )
+    if content is None:
+        if existing_is_managed:
+            LIFECYCLE_FILE.unlink()
+        return False
+    if LIFECYCLE_FILE.exists() and not existing_is_managed:
+        print(f"Preserving custom lifecycle file: {LIFECYCLE_FILE}")
+        return True
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    atomic_write(LIFECYCLE_FILE, content, 0o600)
+    return True
+
+
 def timestamp() -> str:
     return datetime.now().strftime("%Y%m%d-%H%M%S")
 
@@ -387,6 +446,8 @@ def remove_installation(purge_config: bool, ask_scope: bool) -> int:
             CONFIG_FILE.unlink()
         for old_config in CONFIG_DIR.glob("config.before-reconfigure-*") if CONFIG_DIR.exists() else []:
             old_config.unlink()
+        if LIFECYCLE_FILE.exists():
+            LIFECYCLE_FILE.unlink()
         try:
             CONFIG_DIR.rmdir()
         except OSError:
@@ -523,6 +584,7 @@ def main() -> int:
     copy_program_files()
     if should_configure or not CONFIG_FILE.exists():
         write_config(values)
+    lifecycle_installed = write_lifecycle(values)
     bashrc_backup = update_bashrc()
     profile_backup = update_macos_bash_profile()
 
@@ -531,6 +593,10 @@ def main() -> int:
     print(f"Server:  {values['BASH_AI_ENDPOINT']}")
     print(f"Model:   {values['BASH_AI_MODEL']}")
     print(f"Prompts: {PROMPT_DIR}")
+    if lifecycle_installed:
+        print(f"Start/stop: {LIFECYCLE_FILE}")
+    else:
+        print("Start/stop: not installed for this runtime/platform")
     if bashrc_backup:
         print(f"Backup:  {bashrc_backup}")
     if profile_backup:
