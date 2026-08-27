@@ -339,9 +339,14 @@ ai-prompt() {
 _bash_ai_load_lifecycle() {
     local lifecycle_file="${BASH_AI_LIFECYCLE_FILE:-$HOME/.config/bash-ai/lifecycle.bash}"
     unset -f ai-start ai-stop 2>/dev/null || true
+    unset BASH_AI_LIFECYCLE_RUNTIME
     if [[ -r "$lifecycle_file" ]]; then
         # shellcheck disable=SC1090
         source "$lifecycle_file"
+        if [[ -n "${BASH_AI_LIFECYCLE_RUNTIME:-}" \
+            && "$BASH_AI_LIFECYCLE_RUNTIME" != "$BASH_AI_RUNTIME" ]]; then
+            unset -f ai-start ai-stop 2>/dev/null || true
+        fi
     fi
 }
 
