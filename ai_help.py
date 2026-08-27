@@ -157,9 +157,13 @@ model list with `ai-health`. Use `ai-conf --server`, `--runtime`, and `--model`
 to change backends without reinstalling the shell integration.
 
 For supported local runtime/platform combinations, the installer also creates
-`ai-start` and `ai-stop`. Their transparent function definitions live in
+optional `ai-start` and `ai-stop` functions when selected. Their transparent
+function definitions live in
 ~/.config/bash-ai/lifecycle.bash. Unsupported and remote/custom servers do not
-receive guessed lifecycle commands. Create that file yourself to add them.""",
+receive guessed lifecycle commands. Create that file yourself to add them.
+
+Installer flags `--lifecycle` and `--no-lifecycle` enable or disable the managed
+functions explicitly. Ordinary updates preserve the previous choice.""",
             ),
         ),
         (
